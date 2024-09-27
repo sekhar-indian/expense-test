@@ -1,0 +1,54 @@
+name: Deploy Client and Server to EC2
+
+on:
+  push:
+    branches:
+      - main  # Triggers deployment on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout repository code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Set up Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+
+
+    # Install dependencies and build the server
+    
+
+    # Deploy to EC2 server via SSH
+    - name: Deploy to EC2
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+        
+        ssh -o StrictHostKeyChecking=no ec2-user@35.154.227.126 << 'EOF'
+        # Check if directory exists, if not, clone it
+        if [ ! -d "/home/ec2-user/expense-server" ]; then
+          echo "Directory not found. Cloning the repository..."
+          git clone https://github.com/Venu1433697/expense-test.git /home/ec2-user/expense-server
+        else
+          echo "Directory exists. Pulling latest changes..."
+        fi
+        
+          
+        # Navigate to the app directory on EC2
+        cd /home/ec2-user/expense-server
+        # Pull the latest changes from the repository
+        git pull origin main
+
+        # Install server dependencies on EC2
+        cd server
+        npm install
+        pm2 restart all  # Restart Node.js server using PM2 (if you're using it)
