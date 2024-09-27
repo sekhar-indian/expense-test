@@ -33,7 +33,7 @@ jobs:
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
         
-        ssh -o StrictHostKeyChecking=no ec2-user@35.154.227.126 << 'EOF'
+        ssh -o StrictHostKeyChecking=no ec2-user@18.207.223.1 << 'EOF'
         # Check if directory exists, if not, clone it
         if [ ! -d "/home/ec2-user/sekhar" ]; then
           echo "Directory not found. Cloning the repository..."
