@@ -35,16 +35,16 @@ jobs:
         
         ssh -o StrictHostKeyChecking=no ec2-user@35.154.227.126 << 'EOF'
         # Check if directory exists, if not, clone it
-        if [ ! -d "/home/ec2-user/expense-server" ]; then
+        if [ ! -d "/home/ec2-user/sekhar" ]; then
           echo "Directory not found. Cloning the repository..."
-          git clone https://github.com/Venu1433697/expense-test.git /home/ec2-user/expense-server
+          git clone https://github.com/sekhar-indian/expense-test.git /home/ec2-user/sekhar
         else
           echo "Directory exists. Pulling latest changes..."
         fi
         
           
         # Navigate to the app directory on EC2
-        cd /home/ec2-user/expense-server
+        cd /home/ec2-user/sekhar
         # Pull the latest changes from the repository
         git pull origin main
 
